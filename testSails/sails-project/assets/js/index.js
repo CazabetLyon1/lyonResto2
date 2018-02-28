@@ -38,6 +38,8 @@ function getData(latlng, callback){
   });
 }
 
+//getDataThroughAPI();
+
 function setGeolocalisation(cb){
   document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
   var map = L.map('map').setView([45.75, 4.85], 13);
