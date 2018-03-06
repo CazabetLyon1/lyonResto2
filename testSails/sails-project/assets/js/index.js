@@ -1,4 +1,3 @@
-
 function getData(latlng, callback){
   var contenuRecherche = document.getElementById('txtSearch').value;
   console.log("Value: ", contenuRecherche);
@@ -134,6 +133,10 @@ function markerOnClick(e){
   document.getElementById("reviews").innerHTML = this.options.reviews;
   document.getElementById("status").innerHTML = this.options.status;
   document.getElementById("phone").innerHTML = this.options.phone;
+
+}
+
+function suppressionDoublons(file){
 
 }
 
