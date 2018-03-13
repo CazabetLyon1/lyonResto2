@@ -10,7 +10,8 @@ function getData(latlng, callback){
       contenuRecherche: contenuRecherche
     },
     success: function(response, status, jqXHR){
-      response = JSON.parse(response);
+      response = "result.json"
+      //JSON.parse(response);
       var localisation = [];
       for(var i=0; i<response.businesses.length; i++){
         var infos = {
@@ -37,7 +38,6 @@ function getData(latlng, callback){
   });
 }
 
-//getDataThroughAPI();
 
 function setGeolocalisation(cb){
   document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
@@ -136,9 +136,9 @@ function markerOnClick(e){
 
 }
 
-function suppressionDoublons(file){
+//function suppressionDoublons(file){
 
-}
+//}
 
 // var $star_rating = $('.star-rating .fa');
 //
