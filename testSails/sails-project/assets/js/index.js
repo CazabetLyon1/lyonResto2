@@ -2,33 +2,40 @@ function getData(latlng, callback){
   var contenuRecherche = document.getElementById('txtSearch').value;
   console.log("Value: ", contenuRecherche);
   $.ajax({
-    url: routes.getDataFromYelp,
+    //url: routes.getDataFromYelp,
     type: 'GET',
     headers: {
       lat: latlng.lat,
       lng: latlng.lng,
       contenuRecherche: contenuRecherche
     },
-    success: function(response, status, jqXHR){
-      response = "result.json"
-      //JSON.parse(response);
-      var localisation = [];
-      for(var i=0; i<response.businesses.length; i++){
-        var infos = {
-          "name": response.businesses[i].name,
-          "reviews": response.businesses[i].review_count,
-          "rating": response.businesses[i].rating,
-          "status": response.businesses[i].is_closed,
-          "urlImage": response.businesses[i].image_url,
-          "address": response.businesses[i].location.display_address,
-          "phone": response.businesses[i].display_phone,
-          "coordinates": [response.businesses[i].coordinates.latitude, response.businesses[i].coordinates.longitude]
-        };
-        localisation.push(infos);
-        //console.log("Localisation: ", localisation);
-      }
+    success: function(/*response,*/ status, jqXHR){
+      //response = "./result.json";
+      //response =JSON.parse(response);
+      var locResto = [];
 
-      callback(localisation);
+      $.getJSON('result.json', function (data) {
+          locResto.push(data.businesses);
+      });
+
+      // for(var i=0; i<response.businesses.length; i++){
+      //   var infos = {
+      //     "name": response.businesses[i].name,
+      //     "reviews": response.businesses[i].review_count,
+      //     "rating": response.businesses[i].rating,
+      //     "status": response.businesses[i].is_closed,
+      //     "urlImage": response.businesses[i].image_url,
+      //     "address": response.businesses[i].location.display_address,
+      //     "phone": response.businesses[i].display_phone,
+      //     "coordinates": [response.businesses[i].coordinates.latitude, response.businesses[i].coordinates.longitude]
+      //   };
+      //   //localisation.push(infos);
+      //   //console.log("Localisation: ", localisation);
+      //   locResto.push(infos);
+      //   console.log("locResto: ", locResto);
+      // }
+      console.log("locResto", locResto );
+      callback(locResto);
     },
     error: function(jqXHR, status, err){
       console.log(err);
@@ -37,6 +44,7 @@ function getData(latlng, callback){
     }
   });
 }
+
 
 
 function setGeolocalisation(cb){
@@ -69,6 +77,7 @@ function setGeolocalisation(cb){
     event.popup.setContent('No data');
   });
 }
+
 
 $(document).ready(function() {
 

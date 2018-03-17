@@ -41,12 +41,42 @@ var fs = require('fs');
  function getalldata(){
   var lats = [45.701016, 45.721853, 45.742690, 45.763527, 45.784364, 45.807356];
   var longitudes = [4.7669120, 4.795407, 4.823902, 4.852397, 4.880892, 4.909387, 4.937882, 4.966377];
-  lats.forEach(lat => {
+  /*lats.forEach(lat => {
   longitudes.forEach(longitude => {
   getDataThroughAPI(lat, longitude);
   })
-  });
- }
+});*/
+
+var i = 0;
+
+var j = 0;
+
+var interval = setInterval(function () {
+
+
+
+  if( i >= lats.length ) {
+
+    clearInterval(interval);
+
+  }
+getDataThroughAPI(lats[i], longitudes[j]);
+
+  if( j >= longitudes.length ) {
+
+    j = 0;
+
+    i++;
+
+  } else {
+
+    j++;
+
+  }
+
+}, 500);
+}
+
 function getDataThroughAPI(lat, longitude){
 var options = {
    method: 'GET',
