@@ -1,23 +1,37 @@
 function getData(latlng, callback){
   var contenuRecherche = document.getElementById('txtSearch').value;
   console.log("Value: ", contenuRecherche);
+
+  /*var locResto = [];
+  $.getJSON("file:///home/mouhamed/Bureau/g28project/testSails/result.json", function (data) {
+      console.log(data);
+      locResto.push(data);
+      console.log(locResto);
+      //callback(locResto);
+  });*/
+
   $.ajax({
-    //url: routes.getDataFromYelp,
-    type: 'GET',
-    headers: {
+    url: "file:///home/mouhamed/Bureau/g28project/testSails/sails-project/assets/js/result.json",
+    dataType:"json"
+    //type: 'GET',
+    /*headers: {
       lat: latlng.lat,
       lng: latlng.lng,
-      contenuRecherche: contenuRecherche
-    },
-    success: function(/*response,*/ status, jqXHR){
+      contenuRecherche: contenuRecherche*/
+    ,
+   success: function(data){
       //response = "./result.json";
       //response =JSON.parse(response);
       var locResto = [];
 
-      $.getJSON('result.json', function (data) {
-          locResto.push(data.businesses);
-      });
+      $.getJSON('url', function (data) {
+          locResto.push(data);
+          console.log(locResto);
 
+          console.log("success",data);
+          callback(data);
+      });
+    },
       // for(var i=0; i<response.businesses.length; i++){
       //   var infos = {
       //     "name": response.businesses[i].name,
@@ -34,9 +48,9 @@ function getData(latlng, callback){
       //   locResto.push(infos);
       //   console.log("locResto: ", locResto);
       // }
-      console.log("locResto", locResto );
-      callback(locResto);
-    },
+      //console.log("locResto", locResto );
+      //callback(data);
+    //},
     error: function(jqXHR, status, err){
       console.log(err);
     },
@@ -96,8 +110,8 @@ $(document).ready(function() {
     //latlng recupere les donnees du callback
     setGeolocalisation(function(latlng){
       //locs = valeur de retour
-      getData(latlng, function(locs){
-        console.log("Locs: ", locs);
+      getData(latlng, function(locResto){
+        console.log("locResto: ", locResto);
         //console.log("Locs: ", locs);
         document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
         // initialize the map
@@ -114,10 +128,10 @@ $(document).ready(function() {
         });
         var markerPositionActuelle = L.marker((latlng), {icon: greenIcon}).bindPopup("Votre position").addTo(map);
 
-        for(var i=0; i<locs.length; i++){
+        for(var i=0; i<locResto.length; i++){
 
-          var infos = 'Name: '+ locs[i].name + ' Rating: '+ locs[i].rating;
-          var marker = L.marker(locs[i].coordinates, locs[i]).bindPopup(infos).on('click', markerOnClick).addTo(map);
+          var infos = 'Name: '+ locResto[i].name + ' Rating: '+ locResto[i].rating;
+          var marker = L.marker(locResto[i].coordinates, locResto[i]).bindPopup(infos).on('click', markerOnClick).addTo(map);
 
         }
 
