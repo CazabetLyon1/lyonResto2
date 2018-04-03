@@ -1,0 +1,177 @@
+!<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>LYON FOOD</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <!--Mapbox-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="styles/importer.less">
+    <link rel="stylesheet" href="styles/index.css">
+    <!--jQuery et jQuery-ui-->
+	<script src ="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+	<script src ="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+
+  <div class="content">
+   <div class="row">
+     <h1 class="head">Your places guide</h1>
+   </div>
+   <div class="row text-justify">
+     <div class="col-md-2">
+       <form onsubmit="" id="searchForm">
+         <div class="row">
+           <div class="col-md-12" align="center">
+             <h2>Mes critères</h2>
+           </div>
+         </div>
+
+         <div class="row">
+           <div class="col-md-12">
+             <div class="col-md-12" align="center">
+               <h4 class="bg-info">NOM</h4>
+             </div>
+             <div class="input-group">
+              <input type="text" class="form-control" placeholder="NOM(restaurant, bars)..." id="txtSearch"/>
+              <div class="input-group-btn">
+                   <button class="btn btn-primary" type="submit">
+                   <span class="glyphicon glyphicon-search"></span>
+                 </button>
+              </div>
+            </div>
+           </div>
+
+            <div class="col-md-12" align="center">
+              <h4 class="bg-info">RAYON</h4>
+            </div>
+            <div class="custom-control custom-checkbox col-md-12">
+             <input type="checkbox" class="custom-control-input" id="customCheck1">
+             <label class="custom-control-label" for="customCheck1"> 0 - 5 km</label>
+            </div>
+
+            <div class="custom-control custom-checkbox col-md-12">
+              <input type="checkbox" class="custom-control-input" id="customCheck2">
+             <label class="custom-control-label" for="customCheck1"> + 5 km</label>
+           </div>
+
+           <div class="col-md-12" align="center">
+             <h4 class="bg-info">RATING</h4>
+           </div>
+
+           <div class="col-md-12">
+             <div class="star-rating">
+               <span class="fa fa-star-o" data-rating="1"></span>
+               <span class="fa fa-star-o" data-rating="2"></span>
+               <span class="fa fa-star-o" data-rating="3"></span>
+               <span class="fa fa-star-o" data-rating="4"></span>
+               <span class="fa fa-star-o" data-rating="5"></span>
+               <!-- <input type="hidden" name="whatever1" class="rating-value" value="2.56"> -->
+             </div>
+           </div>
+           </div>
+
+       </form>
+     </div>
+     <div class="col-md-7">
+       <div id="mapid"></div>
+     </div>
+     <div class="col-md-3">
+       <h2 id="name" style="text-align:center;"></h2>
+       <div id="image">
+         <img id="imageMarker" src="" style="width:100%">
+       </div>
+       <div id="markerInfos" hidden>
+         <ul class="list-group">
+          <!-- <li class="list-group-item">Name<span id="name" class="badge"></span></li> -->
+          <li id="address" class="list-group-item">Address<span class="badge"></span></li>
+          <li class="list-group-item">Rating<span id="rating" class="badge"></span></li>
+          <li class="list-group-item">Reviews number<span id="reviews" class="badge"></span></li>
+          <li class="list-group-item">closed<span id="closed" class="badge"></span></li>
+          <li class="list-group-item">Phone<span id="phone" class="badge"></span></li>
+         </ul>
+       </div>
+
+     </div>
+   </div>
+ </div>
+
+<script>
+
+var map;
+var resto=[];
+
+  document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
+   map = L.map('map').setView([45.75, 4.85], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 17,
+      minZoom: 4
+   }).addTo(map);
+
+
+  $.getJSON('src/properResto.json', function (data) {
+           //resto.push(data);
+           resto=data;
+           console.log("resto: ",resto);
+           console.log("1er element",resto[0]);
+           console.log("2er element",resto[1]);
+
+           displayDots();
+       });
+
+     console.log("2eme :",resto);
+
+
+       function displayDots(){
+
+          for(var i=0; i<resto.length; i++){
+            console.log(i);
+            if(resto[i]!=null){
+            //console.log(resto.length);
+            //console.log(map);
+            //console.log("resto[i] :",resto[i]);
+            var infos = 'Name: '+ resto[i].name + ' Rating: '+ resto[i].rating + ' phone: '+ resto[i].display_phone ;
+            var coordinates = {lat: resto[i].coordinates.latitude, lng: resto[i].coordinates.longitude};
+            var actu=resto[i];
+            console.log(actu);
+            var marker = L.marker(coordinates).bindPopup(infos).addTo(map);
+
+            marker.on('click', function(){
+
+              console.log(actu);
+
+
+              document.getElementById("imageMarker").src = actu.image_url;
+              document.getElementById("markerInfos").style.display = "block";
+              document.getElementById("name").innerHTML = actu.name;
+              document.getElementById("address").innerHTML = actu.location.display_address[0];
+              document.getElementById("rating").innerHTML = actu.rating;
+              document.getElementById("reviews").innerHTML = actu.review_count;
+              document.getElementById("closed").innerHTML = actu.is_closed;
+              document.getElementById("phone").innerHTML = actu.display_phone;
+
+            });
+           }
+          }
+       }
+
+
+
+
+
+
+</script>
+
+</body>
