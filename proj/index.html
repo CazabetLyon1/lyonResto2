@@ -111,6 +111,8 @@
 
 var map;
 var resto=[];
+//var marker=[];
+var loc=[];
 
   document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
    map = L.map('map').setView([45.75, 4.85], 13);
@@ -142,30 +144,55 @@ var resto=[];
             //console.log(resto.length);
             //console.log(map);
             //console.log("resto[i] :",resto[i]);
+                var details = {
+              "name": resto[i].name,
+              "reviews": resto[i].review_count,
+              "rating": resto[i].rating,
+              "status": resto[i].is_closed,
+              "image_url": resto[i].image_url,
+              "address": resto[i].location.display_address,
+              "phone": resto[i].display_phone,
+              };
+              loc.push(details);
+
             var infos = 'Name: '+ resto[i].name + ' Rating: '+ resto[i].rating + ' phone: '+ resto[i].display_phone ;
             var coordinates = {lat: resto[i].coordinates.latitude, lng: resto[i].coordinates.longitude};
-            var actu=resto[i];
-            console.log(actu);
-            var marker = L.marker(coordinates).bindPopup(infos).addTo(map);
+            //var actu=resto;
+            //console.log(actu);
+             var marker = L.marker(coordinates,loc[i]).bindPopup(infos).on('click',function(e){
 
-            marker.on('click', function(){
+               document.getElementById("imageMarker").src = e.image_url;
+               document.getElementById("markerInfos").style.display = "block";
+               document.getElementById("name").innerHTML = e.name;
+               document.getElementById("address").innerHTML = e.address;
+               document.getElementById("rating").innerHTML = e.rating;
+               document.getElementById("reviews").innerHTML = e.reviews;
+               document.getElementById("closed").innerHTML = e.status;
+               document.getElementById("phone").innerHTML = e.phone;
 
-              console.log(actu);
+             }).addTo(map);
+             console.log(marker);
 
 
-              document.getElementById("imageMarker").src = actu.image_url;
-              document.getElementById("markerInfos").style.display = "block";
-              document.getElementById("name").innerHTML = actu.name;
-              document.getElementById("address").innerHTML = actu.location.display_address[0];
-              document.getElementById("rating").innerHTML = actu.rating;
-              document.getElementById("reviews").innerHTML = actu.review_count;
-              document.getElementById("closed").innerHTML = actu.is_closed;
-              document.getElementById("phone").innerHTML = actu.display_phone;
-
-            });
            }
           }
+          console.log("loc :",loc);
        }
+
+       /*function markerOnClick(e){
+
+         document.getElementById("imageMarker").src = this.options.image_url;
+         document.getElementById("markerInfos").style.display = "block";
+         document.getElementById("name").innerHTML = this.options.name;
+         document.getElementById("address").innerHTML = this.options.address;
+         document.getElementById("rating").innerHTML = this.options.rating;
+         document.getElementById("reviews").innerHTML = this.options.reviews;
+         document.getElementById("closed").innerHTML = this.options.status;
+         document.getElementById("phone").innerHTML = this.options.phone;
+
+
+
+       }*/
 
 
 
