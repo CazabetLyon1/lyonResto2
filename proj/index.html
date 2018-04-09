@@ -110,9 +110,24 @@
 <script>
 
 var map;
+
+/*tableau qui contiendra tous les restaurants de lyon et alentour */
 var resto=[];
-//var marker=[];
+/*tableau qui contiendra les markers des restaurants */
+var marker=[];
+
 var loc=[];
+
+/* tableau qui contiendront les restaurants des différents arrondissements de Lyon */
+var resto1Arr=[];
+var resto2Arr=[];
+var resto3Arr=[];
+var resto4Arr=[];
+var resto5Arr=[];
+var resto6Arr=[];
+var resto7Arr=[];
+var resto8Arr=[];
+var resto9Arr=[];
 
   document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
    map = L.map('map').setView([45.75, 4.85], 13);
@@ -126,20 +141,20 @@ var loc=[];
   $.getJSON('src/properResto.json', function (data) {
            //resto.push(data);
            resto=data;
-           console.log("resto: ",resto);
-           console.log("1er element",resto[0]);
-           console.log("2er element",resto[1]);
+           //console.log("resto: ",resto);
+           //console.log("1er element",resto[0]);
+           //console.log("2er element",resto[1]);
 
            displayDots();
        });
 
-     console.log("2eme :",resto);
+     //console.log("2eme :",resto);
 
 
        function displayDots(){
 
           for(var i=0; i<resto.length; i++){
-            console.log(i);
+            //console.log(i);
             if(resto[i]!=null){
             //console.log(resto.length);
             //console.log(map);
@@ -157,42 +172,77 @@ var loc=[];
 
             var infos = 'Name: '+ resto[i].name + ' Rating: '+ resto[i].rating + ' phone: '+ resto[i].display_phone ;
             var coordinates = {lat: resto[i].coordinates.latitude, lng: resto[i].coordinates.longitude};
-            //var actu=resto;
-            //console.log(actu);
-             var marker = L.marker(coordinates,loc[i]).bindPopup(infos).on('click',function(e){
+           
+            /*var restoIcon = L.icon({
+				iconUrl: 'images/location.png',
+				//shadowUrl: 'leaf-shadow.png',
 
-               document.getElementById("imageMarker").src = e.image_url;
-               document.getElementById("markerInfos").style.display = "block";
-               document.getElementById("name").innerHTML = e.name;
-               document.getElementById("address").innerHTML = e.address;
-               document.getElementById("rating").innerHTML = e.rating;
-               document.getElementById("reviews").innerHTML = e.reviews;
-               document.getElementById("closed").innerHTML = e.status;
-               document.getElementById("phone").innerHTML = e.phone;
-
-             }).addTo(map);
-             console.log(marker);
-
+				iconSize:     [35, 65], // size of the icon
+				shadowSize:   [50, 64], // size of the shadow
+				iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+				shadowAnchor: [4, 62],  // the same for the shadow
+				popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+			});*/
+			var actu=resto[i];
+           
+             marker[i] = new L.marker(coordinates,loc[i]).bindPopup(infos).on('click',markerOnClick).addTo(map);
+             marker[i].infos=details;
+             //console.log(marker[i]);
 
            }
           }
-          console.log("loc :",loc);
+          //console.log("loc :",loc);
        }
 
-       /*function markerOnClick(e){
+  
+      function markerOnClick(e){
+		  
+		        //console.log("e :",e);
+				 //console.log("e.target :",e.target);
+		  
+		       document.getElementById("imageMarker").src = e.target.infos.image_url;
+               document.getElementById("markerInfos").style.display = "block";
+               document.getElementById("name").innerHTML = e.target.infos.name;
+               document.getElementById("address").innerHTML = e.target.infos.address;
+               document.getElementById("rating").innerHTML = e.target.infos.rating;
+               document.getElementById("reviews").innerHTML = e.target.infos.reviews;
+               document.getElementById("closed").innerHTML = e.target.infos.status;
+               document.getElementById("phone").innerHTML = e.target.infos.phone;
+		   
+		  }
+       
+       
+               function supprimer(){
+            resto.forEach(function (x){
+                x.remove();
+            });
+            //permet de décocher un bouton radio quand on sélectionne une nouvelle catégorie
+            if(btnRadio_selectionne==true){
+				var type                              = tab_radio[0];
+				document.getElementById(type).checked = false;
+				btnRadio_selectionne                  = false;
+				tab_radio                             = [];
+            }
+            //permet déselectionner les étoiles quand on sélectionne une nouvelle catégorie
+            if(etoile_selectionne==true){
+                var _type = tab_etoile[0];
+                var _lettre;
+                switch(_type){
+                    case "hotel": _lettre = "H"; id = "choixhotel";
+                        break;
+                    case "collectif": _lettre = "C"; id = "choixcollectif";
+                        break;
+                    case "locatif": _lettre = "L"; id = "choixlocatif";
+                        break;
+                }
+                for(i=1;i<6;i++){
+                    document.getElementById('_'+i + _lettre).src = tabEtoile[0].src;
+                }
+				etoile_selectionne = false;
+				tab_etoile         = [];
+            }
+        }
 
-         document.getElementById("imageMarker").src = this.options.image_url;
-         document.getElementById("markerInfos").style.display = "block";
-         document.getElementById("name").innerHTML = this.options.name;
-         document.getElementById("address").innerHTML = this.options.address;
-         document.getElementById("rating").innerHTML = this.options.rating;
-         document.getElementById("reviews").innerHTML = this.options.reviews;
-         document.getElementById("closed").innerHTML = this.options.status;
-         document.getElementById("phone").innerHTML = this.options.phone;
-
-
-
-       }*/
 
 
 
