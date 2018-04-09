@@ -96,6 +96,7 @@
          <ul class="list-group">
           <!-- <li class="list-group-item">Name<span id="name" class="badge"></span></li> -->
           <li id="address" class="list-group-item">Address<span class="badge"></span></li>
+          <li class="list-group-item">Type<span id="type" class="badge"></span></li>
           <li class="list-group-item">Rating<span id="rating" class="badge"></span></li>
           <li class="list-group-item">Reviews number<span id="reviews" class="badge"></span></li>
           <li class="list-group-item">closed<span id="closed" class="badge"></span></li>
@@ -162,6 +163,7 @@ var resto9Arr=[];
                 var details = {
               "name": resto[i].name,
               "reviews": resto[i].review_count,
+              "type":resto[i].categories[0].alias,
               "rating": resto[i].rating,
               "status": resto[i].is_closed,
               "image_url": resto[i].image_url,
@@ -203,6 +205,7 @@ var resto9Arr=[];
 		       document.getElementById("imageMarker").src = e.target.infos.image_url;
                document.getElementById("markerInfos").style.display = "block";
                document.getElementById("name").innerHTML = e.target.infos.name;
+               document.getElementById("type").innerHTML = e.target.infos.type;
                document.getElementById("address").innerHTML = e.target.infos.address;
                document.getElementById("rating").innerHTML = e.target.infos.rating;
                document.getElementById("reviews").innerHTML = e.target.infos.reviews;
@@ -212,39 +215,6 @@ var resto9Arr=[];
 		  }
        
        
-               function supprimer(){
-            resto.forEach(function (x){
-                x.remove();
-            });
-            //permet de décocher un bouton radio quand on sélectionne une nouvelle catégorie
-            if(btnRadio_selectionne==true){
-				var type                              = tab_radio[0];
-				document.getElementById(type).checked = false;
-				btnRadio_selectionne                  = false;
-				tab_radio                             = [];
-            }
-            //permet déselectionner les étoiles quand on sélectionne une nouvelle catégorie
-            if(etoile_selectionne==true){
-                var _type = tab_etoile[0];
-                var _lettre;
-                switch(_type){
-                    case "hotel": _lettre = "H"; id = "choixhotel";
-                        break;
-                    case "collectif": _lettre = "C"; id = "choixcollectif";
-                        break;
-                    case "locatif": _lettre = "L"; id = "choixlocatif";
-                        break;
-                }
-                for(i=1;i<6;i++){
-                    document.getElementById('_'+i + _lettre).src = tabEtoile[0].src;
-                }
-				etoile_selectionne = false;
-				tab_etoile         = [];
-            }
-        }
-
-
-
 
 
 
