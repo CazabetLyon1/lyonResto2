@@ -1,5 +1,12 @@
+body {
+  
+  background-color:GhostWhite;
+  background-image: url("images/lyon.jpg");
+}
+
 #mapid {
   height: 700px;
+ width: 950px;
 }
 #image{
   height: 300px;
@@ -7,11 +14,14 @@
 }
 
 .head{
-  text-align: center;
-  padding: 40px;
-  /* margin: 1% 2% 1% 2%; */
-  
+text-align: center;
+font-style:italic;
+font-family:times,serif;
+color:green;
+padding: 40px;
 }
+
+
 .content{
   margin: 5% 7% 0 7%;
 }
