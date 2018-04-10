@@ -44,7 +44,7 @@
                <h4 class="bg-info">NOM</h4>
              </div>
              <div class="input-group">
-              <input type="text" class="form-control" placeholder="NOM(restaurant, bars)..." id="txtSearch"/>
+              <input type="text" class="form-control" placeholder="OÙ (Arrondissement)..." id="txtSearch"/>
               <div class="input-group-btn">
                    <button class="btn btn-primary" type="submit">
                    <span class="glyphicon glyphicon-search"></span>
@@ -54,17 +54,14 @@
            </div>
 
             <div class="col-md-12" align="center">
-              <h4 class="bg-info">RAYON</h4>
+              <h4 class="bg-info">GENRE</h4>
             </div>
-            <div class="custom-control custom-checkbox col-md-12">
-             <input type="checkbox" class="custom-control-input" id="customCheck1">
-             <label class="custom-control-label" for="customCheck1"> 0 - 5 km</label>
+            <div>
+              <input type="text" class="form-control" placeholder="Type of food..."/>
             </div>
 
-            <div class="custom-control custom-checkbox col-md-12">
-              <input type="checkbox" class="custom-control-input" id="customCheck2">
-             <label class="custom-control-label" for="customCheck1"> + 5 km</label>
-           </div>
+
+
 
            <div class="col-md-12" align="center">
              <h4 class="bg-info">RATING</h4>
@@ -80,6 +77,39 @@
                <!-- <input type="hidden" name="whatever1" class="rating-value" value="2.56"> -->
              </div>
            </div>
+
+
+           <div class="col-md-12" align="center">
+             <h4 class="bg-info">Arrondissement</h4>
+          </div>
+
+          <div class="radio">
+            <label><input name="arrondissement" id="arr1" type="radio" onclick="choixarrondissement(this.id)" >69001</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr2" type="radio" onclick="choixarrondissement(this.id)" >69002</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr3" type="radio" onclick="choixarrondissement(this.id)">69003</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr4" type="radio" onclick="choixarrondissement(this.id)">69004</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr5" type="radio" onclick="choixarrondissement(this.id)">69005</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr6" type="radio" onclick="choixarrondissement(this.id)" >69006</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr7" type="radio" onclick="choixarrondissement(this.id)">69007</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr8" type="radio" onclick="choixarrondissement(this.id)">69008</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr9" type="radio" onclick="choixarrondissement(this.id)">69009</label>
+          </div>
            </div>
 
        </form>
@@ -98,7 +128,7 @@
           <li id="address" class="list-group-item">Address<span class="badge"></span></li>
           <li class="list-group-item">Type<span id="type" class="badge"></span></li>
           <li class="list-group-item">Rating<span id="rating" class="badge"></span></li>
-          <li class="list-group-item">Reviews number<span id="reviews" class="badge"></span></li>
+          <li class="list-group-item">Number of reviews<span id="reviews" class="badge"></span></li>
           <li class="list-group-item">closed<span id="closed" class="badge"></span></li>
           <li class="list-group-item">Phone<span id="phone" class="badge"></span></li>
          </ul>
@@ -115,10 +145,13 @@ var map;
 /*tableau qui contiendra tous les restaurants de lyon et alentour */
 var resto=[];
 /*tableau qui contiendra les markers des restaurants */
-var marker=[];
+var mesMarkers=[];
 
 var loc=[];
 
+var btnRadio_selectionne = false;
+var tab_radio            = [];
+var resultatsCLick = [];
 /* tableau qui contiendront les restaurants des différents arrondissements de Lyon */
 var resto1Arr=[];
 var resto2Arr=[];
@@ -130,6 +163,8 @@ var resto7Arr=[];
 var resto8Arr=[];
 var resto9Arr=[];
 
+//var restochoisi=[];
+
   document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
    map = L.map('map').setView([45.75, 4.85], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
@@ -137,6 +172,8 @@ var resto9Arr=[];
       maxZoom: 17,
       minZoom: 4
    }).addTo(map);
+
+   var layerGroup = L.layerGroup().addTo(map);
 
 
   $.getJSON('src/properResto.json', function (data) {
@@ -146,49 +183,40 @@ var resto9Arr=[];
            //console.log("1er element",resto[0]);
            //console.log("2er element",resto[1]);
 
-           displayDots();
+           displayDots(resto);
        });
 
      //console.log("2eme :",resto);
 
 
-       function displayDots(){
-
-          for(var i=0; i<resto.length; i++){
+       function displayDots(restochoisi){
+          console.log("displayDOT", restochoisi );
+          for(var i=0; i<restochoisi.length; i++){
             //console.log(i);
             if(resto[i]!=null){
             //console.log(resto.length);
             //console.log(map);
             //console.log("resto[i] :",resto[i]);
                 var details = {
-              "name": resto[i].name,
-              "reviews": resto[i].review_count,
-              "type":resto[i].categories[0].alias,
-              "rating": resto[i].rating,
-              "status": resto[i].is_closed,
-              "image_url": resto[i].image_url,
-              "address": resto[i].location.display_address,
-              "phone": resto[i].display_phone,
+              "name": restochoisi[i].name,
+              "reviews": restochoisi[i].review_count,
+              "type":restochoisi[i].categories[0].alias,
+              "rating": restochoisi[i].rating,
+              "status": restochoisi[i].is_closed,
+              "image_url": restochoisi[i].image_url,
+              "address": restochoisi[i].location.display_address,
+              "phone": restochoisi[i].display_phone,
               };
               loc.push(details);
 
-            var infos = 'Name: '+ resto[i].name + ' Rating: '+ resto[i].rating + ' phone: '+ resto[i].display_phone ;
-            var coordinates = {lat: resto[i].coordinates.latitude, lng: resto[i].coordinates.longitude};
-           
-            /*var restoIcon = L.icon({
-				iconUrl: 'images/location.png',
-				//shadowUrl: 'leaf-shadow.png',
+            var infos = 'Name: '+ restochoisi[i].name + ' Rating: '+ restochoisi[i].rating + ' phone: '+ restochoisi[i].display_phone ;
+            var coordinates = {lat: restochoisi[i].coordinates.latitude, lng: restochoisi[i].coordinates.longitude};
 
-				iconSize:     [35, 65], // size of the icon
-				shadowSize:   [50, 64], // size of the shadow
-				iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-				shadowAnchor: [4, 62],  // the same for the shadow
-				popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-			});*/
-			var actu=resto[i];
-           
-             marker[i] = new L.marker(coordinates,loc[i]).bindPopup(infos).on('click',markerOnClick).addTo(map);
-             marker[i].infos=details;
+          	 mesMarkers[i] = new L.marker(coordinates,loc[i]).bindPopup(infos).on('click',markerOnClick);
+             mesMarkers[i].infos=details;
+             layerGroup.addLayer(mesMarkers[i]);
+
+
              //console.log(marker[i]);
 
            }
@@ -196,12 +224,12 @@ var resto9Arr=[];
           //console.log("loc :",loc);
        }
 
-  
+
       function markerOnClick(e){
-		  
+
 		        //console.log("e :",e);
 				 //console.log("e.target :",e.target);
-		  
+
 		       document.getElementById("imageMarker").src = e.target.infos.image_url;
                document.getElementById("markerInfos").style.display = "block";
                document.getElementById("name").innerHTML = e.target.infos.name;
@@ -211,10 +239,211 @@ var resto9Arr=[];
                document.getElementById("reviews").innerHTML = e.target.infos.reviews;
                document.getElementById("closed").innerHTML = e.target.infos.status;
                document.getElementById("phone").innerHTML = e.target.infos.phone;
-		   
+
 		  }
-       
-       
+
+    // function rechercher(){
+    //             supprimer();
+    // 			var word  = document.getElementById("txtSearch").value;
+    // 			var found = false;
+    //             resto.forEach(function(x){
+    //
+    //
+    //                     if(word == x.display_adress){ //Vérifie la correspondance entre l'adresse tapé et l'adresse dans la base de donnée
+    //                         ajouterElementSurCarte(y, type);
+    //                         found = true;
+    //                     }
+    //                 });
+    //
+    //             if(found == false){
+    //                 alert('Aucun résultat dans la base de donée pour votre recherche');
+    //             }
+    //             document.getElementById("txtSearch").value = ""; //Vide la barre de recherche
+    //  }
+    //
+
+           function supprimer(){
+               //console.log("avant sdhzegv");
+               layerGroup.eachLayer(function(layer){
+                  map.removeLayer(layer);
+               });
+
+               //permet de décocher un bouton radio quand on sélectionne une nouvelle catégorie
+               if(btnRadio_selectionne==true){
+         				var arrondissement                              = tab_radio[0];
+         				//document.getElementById(arrondissement).checked = false;
+         				btnRadio_selectionne                  = false;
+         				tab_radio                             = [];
+               }
+           }
+
+           // function toucheEntree (event){
+           //   //Si la touche Entrée (dont le code ASCII est 13) a été appuyer alors on lance la fonction rechercher
+           //     if(event.keyCode == 13){
+           //         rechercher();
+           //     }
+           // }
+
+           function choixarrondissement(arrondissement){
+
+               btnRadio_selectionne = true;
+
+
+               tab_radio.push(arrondissement); // ajoute l'arrondissement dans le tableau
+
+                supprimer();
+
+              resultatsCLick= ajouterResto(arrondissement);
+              console.log("resultatsCLick ", resultatsCLick);
+              displayDots(resultatsCLick);
+               //console.log("resto", resto);
+               //console.log(resto[0].location.zip_code);
+
+
+           }
+
+
+
+
+
+        function ajouterResto(arrondissement){
+          var tableau=[];
+
+
+            if(arrondissement == document.getElementById("arr1").id){
+                for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69001"){
+
+                    tableau.push(resto[i]);
+
+                  }
+                }
+
+              }
+            }
+            else if(arrondissement == document.getElementById("arr2").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69002"){
+
+                    tableau.push(resto[i]);
+
+                  }
+                }
+
+              }
+            }
+            else if(arrondissement == document.getElementById("arr3").id){
+
+                for(var i=0; i<resto.length; i++){
+
+                  if(resto[i] != null){
+                    if(resto[i].location.zip_code == "69003"){
+                      tableau.push(resto[i]);
+                      console.log("tab", tableau);
+                    }
+                  }
+
+                }
+
+            }
+            else if(arrondissement == document.getElementById("arr4").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69004"){
+
+                    tableau.push(resto[i]);
+
+                    }
+                }
+
+              }
+          }
+
+            else if(arrondissement == document.getElementById("arr5").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69005"){
+
+                    tableau.push(resto[i]);
+
+                  }
+                }
+
+              }
+            }
+
+            else if(arrondissement == document.getElementById("arr6").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69006"){
+
+                    tableau.push(resto[i]);
+
+                  }
+                }
+
+              }
+            }
+            else if(arrondissement == document.getElementById("arr7").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69007"){
+
+                    tableau.push(resto[i]);
+
+                  }
+                }
+
+              }
+            }
+            else if(arrondissement == document.getElementById("arr8").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69008"){
+
+                    tableau.push(resto[i]);
+
+                  }
+                }
+
+              }
+            }
+            else if(arrondissement == document.getElementById("arr9").id){
+              for(var i=0; i<resto.length; i++){
+
+                if(resto[i] != null){
+                  if(resto[i].location.zip_code == "69009"){
+
+                    tableau.push(resto[i]);
+
+
+                  }
+                }
+
+              }
+            }
+
+
+            return tableau;
+        }
+
+        //ajouter une fonction pour supprimer les données de resultatsCLick
+      function deleteTableResultats(){
+        resultatsCLick.forEach(function(x){
+          x="";
+        });
+      }
+
+
 
 
 
