@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 div.jumbotron.head-lyon{
     color:#fff;
     text-align:left;
     background-size:cover;
-    background: url('/home/siny/Bureau/g28project/proj/images/images.png');
+    background: url('../images/images.png');
     background-position:center;
     line-height: 100%;
 
@@ -15,7 +14,7 @@ div.jumbotron.mid-img{
   /*background-size:cover;*/
   background-position:center;
   line-height: 100%;
-  background: url('/home/siny/Bureau/g28project/proj/imageresto.jpg');
+  background: url('../images/imageresto.jpg');
 
 }
 
@@ -23,18 +22,14 @@ h3.head-guide{
   text-align:center;
 }
 
+h2.sitename{
 
-=======
-body {
-  
-  background-color:GhostWhite;
-  background-image: url("images/lyon.jpg");
+  text-align: center;
 }
 
->>>>>>> 0914c9d8e89c725d6aba68e52eb7363b3d46ed36
 #mapid {
   height: 700px;
- width: 950px;
+ width: 700px;
 }
 #image{
   height: 300px;
@@ -42,18 +37,17 @@ body {
 }
 
 .head{
-<<<<<<< HEAD
+
   text-align: center;
   padding: 40px;
   /* margin: 1% 2% 1% 2%; */
 
-=======
 text-align: center;
 font-style:italic;
 font-family:times,serif;
 color:green;
 padding: 40px;
->>>>>>> 0914c9d8e89c725d6aba68e52eb7363b3d46ed36
+
 }
 
 
