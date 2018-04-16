@@ -1,3 +1,7 @@
+.btn {
+  text-align: right;
+
+}
 div.jumbotron.head-lyon{
     color:#fff;
     text-align:left;
@@ -29,7 +33,7 @@ h2.sitename{
 
 #mapid {
   height: 700px;
- width: 700px;
+  width: 900px;
 }
 #image{
   height: 300px;
