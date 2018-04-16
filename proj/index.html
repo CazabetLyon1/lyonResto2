@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>LYON FOOD</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="viewport"  content="initial-scale=1, width=device-width, maximum-scale=1,user-scalable=no"/>
     <!--Mapbox-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,19 +20,58 @@
 	<script src ="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 	<script src ="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery.js">
+
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 
 
 </head>
 <body>
+  <div class="col-lg-1"></div>
+  <div class="col-md-10 jumbotron head-lyon">
+    <p>Venez goûter à la cuisine lyonnaise</p>
+    <h2>LYON FOOD</h2>
+
+    <h3 class="head-guide">Votre guide de restaurants à Lyon</h3>
+  <div class="col-lg-1"></div>
+
+  </div>
+  <div class="col-md-2"></div>
+  <div class="col-md-8 jumbotron mid-img">
+    <p>Lyon, capitale de la gastronomie</p>
+    <p>"La vraie cuisine est une forme d'art, </p>
+    <p>un cadeau à partager"</p>
+    <p>Arnold Wesker</p>
+  </div>
+
+
 
   <div class="content">
-   <div class="row">
-     <h1 class="head">Your places guide</h1>
-   </div>
+    <div class="col-md-2"></div>
+
+
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <span>Recherche par nom/type</span>
+      <input type="text" class="form-control" placeholder="Nom, Type..." id="txtSearch"/>
+
+         <!-- <button class="btn btn-primary" type="submit">
+         <span class="glyphicon glyphicon-search"></span>
+         </button> -->
+
+    </div>
+    <div class="col-md-2"></div>
+
+
+
+
    <div class="row text-justify">
      <div class="col-md-2">
-       <form onsubmit="" id="searchForm">
+
          <div class="row">
+
            <div class="col-md-12" align="center">
              <h2>Mes critères</h2>
            </div>
@@ -44,12 +83,9 @@
                <h4 class="bg-info">NOM</h4>
              </div>
              <div class="input-group">
-              <input type="text" class="form-control" placeholder="OÙ (Arrondissement)..." id="txtSearch"/>
-              <div class="input-group-btn">
-                   <button class="btn btn-primary" type="submit">
-                   <span class="glyphicon glyphicon-search"></span>
-                 </button>
-              </div>
+
+              <br />
+             <br />
             </div>
            </div>
 
@@ -57,7 +93,7 @@
               <h4 class="bg-info">GENRE</h4>
             </div>
             <div>
-              <input type="text" class="form-control" placeholder="Type of food..."/>
+              <input id="txtGenre" type="text" class="form-control" placeholder="Type of food..."/>
             </div>
 
 
@@ -110,10 +146,28 @@
           <div class="radio">
             <label><input name="arrondissement" id="arr9" type="radio" onclick="choixarrondissement(this.id)">69009</label>
           </div>
-           </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr10" type="radio" onclick="choixarrondissement(this.id)">69100</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr11" type="radio" onclick="choixarrondissement(this.id)">69110</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr12" type="radio" onclick="choixarrondissement(this.id)">69120</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr13" type="radio" onclick="choixarrondissement(this.id)">69200</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr14" type="radio" onclick="choixarrondissement(this.id)">69300</label>
+          </div>
+          <div class="radio">
+            <label><input name="arrondissement" id="arr15" type="radio" onclick="choixarrondissement(this.id)">69500</label>
+          </div>
+          <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="searchByGenre()">Search</button>
+        </div>
 
-       </form>
-     </div>
+       </div>
      <div class="col-md-7">
        <div id="mapid"></div>
      </div>
@@ -150,20 +204,23 @@ var mesMarkers=[];
 var loc=[];
 
 var btnRadio_selectionne = false;
+var btnSearch = false;
+var btnGenre = false;
+var btnRating = false;
+
+var tableResultats=[];
+
 var tab_radio            = [];
 var resultatsCLick = [];
-/* tableau qui contiendront les restaurants des différents arrondissements de Lyon */
-var resto1Arr=[];
-var resto2Arr=[];
-var resto3Arr=[];
-var resto4Arr=[];
-var resto5Arr=[];
-var resto6Arr=[];
-var resto7Arr=[];
-var resto8Arr=[];
-var resto9Arr=[];
 
-//var restochoisi=[];
+var baseAdresse = [];
+
+var tableArrondissement = [];
+var tableArrondissement = { "arr1" : 69001, "arr2" : 69002, "arr3": 69003, "arr4": 69004, "arr5": 69005, "arr6": 69006, "arr7": 69007, "arr8": 69008,
+"arr9": 69009, "arr10": 69100, "arr11": 69110,
+"arr12": 69120, "arr13": 69200, "arr14": 69300, "arr15": 69500  };
+
+
 
   document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
    map = L.map('map').setView([45.75, 4.85], 13);
@@ -177,27 +234,28 @@ var resto9Arr=[];
 
 
   $.getJSON('src/properResto.json', function (data) {
-           //resto.push(data);
+
            resto=data;
-           //console.log("resto: ",resto);
-           //console.log("1er element",resto[0]);
-           //console.log("2er element",resto[1]);
 
+           for(var i=0; i<resto.length; i++){
+              if(resto[i] != null){
+                baseAdresse.push(resto[i].location.address1);
+              }
+           }
+           //console.log("base adresse", baseAdresse);
            displayDots(resto);
-       });
 
-     //console.log("2eme :",resto);
+  });
 
-
-       function displayDots(restochoisi){
-          console.log("displayDOT", restochoisi );
+     function displayDots(restochoisi){
+          //console.log("displayDOT", restochoisi );
           for(var i=0; i<restochoisi.length; i++){
             //console.log(i);
             if(resto[i]!=null){
             //console.log(resto.length);
             //console.log(map);
             //console.log("resto[i] :",resto[i]);
-                var details = {
+              var details = {
               "name": restochoisi[i].name,
               "reviews": restochoisi[i].review_count,
               "type":restochoisi[i].categories[0].alias,
@@ -227,40 +285,20 @@ var resto9Arr=[];
 
       function markerOnClick(e){
 
-		        //console.log("e :",e);
+		     //console.log("e :",e);
 				 //console.log("e.target :",e.target);
 
 		       document.getElementById("imageMarker").src = e.target.infos.image_url;
-               document.getElementById("markerInfos").style.display = "block";
-               document.getElementById("name").innerHTML = e.target.infos.name;
-               document.getElementById("type").innerHTML = e.target.infos.type;
-               document.getElementById("address").innerHTML = e.target.infos.address;
-               document.getElementById("rating").innerHTML = e.target.infos.rating;
-               document.getElementById("reviews").innerHTML = e.target.infos.reviews;
-               document.getElementById("closed").innerHTML = e.target.infos.status;
-               document.getElementById("phone").innerHTML = e.target.infos.phone;
+           document.getElementById("markerInfos").style.display = "block";
+           document.getElementById("name").innerHTML = e.target.infos.name;
+           document.getElementById("type").innerHTML = e.target.infos.type;
+           document.getElementById("address").innerHTML = e.target.infos.address;
+           document.getElementById("rating").innerHTML = e.target.infos.rating;
+           document.getElementById("reviews").innerHTML = e.target.infos.reviews;
+           document.getElementById("closed").innerHTML = e.target.infos.status;
+           document.getElementById("phone").innerHTML = e.target.infos.phone;
 
 		  }
-
-    // function rechercher(){
-    //             supprimer();
-    // 			var word  = document.getElementById("txtSearch").value;
-    // 			var found = false;
-    //             resto.forEach(function(x){
-    //
-    //
-    //                     if(word == x.display_adress){ //Vérifie la correspondance entre l'adresse tapé et l'adresse dans la base de donnée
-    //                         ajouterElementSurCarte(y, type);
-    //                         found = true;
-    //                     }
-    //                 });
-    //
-    //             if(found == false){
-    //                 alert('Aucun résultat dans la base de donée pour votre recherche');
-    //             }
-    //             document.getElementById("txtSearch").value = ""; //Vide la barre de recherche
-    //  }
-    //
 
            function supprimer(){
                //console.log("avant sdhzegv");
@@ -277,30 +315,90 @@ var resto9Arr=[];
                }
            }
 
-           // function toucheEntree (event){
-           //   //Si la touche Entrée (dont le code ASCII est 13) a été appuyer alors on lance la fonction rechercher
-           //     if(event.keyCode == 13){
-           //         rechercher();
-           //     }
-           // }
+           function toucheEntree (event){
+             //Si la touche Entrée (dont le code ASCII est 13) a été appuyer alors on lance la fonction rechercher
+               if(event.keyCode == 13){
+                   rechercher();
+               }
+           }
+
+
+
+
+
+                $(function(){
+                  $("#txtSearch").autocomplete({
+                    source: baseAdresse,
+                    minLength: 2 // l'autocomplétion débutera au bout de 3 caractères
+                  }).keyup(function(e){
+                   toucheEntree(e);// gère l'évènement sur la touche entrée lorsque l'utilisateur à sélectionner une adresse dans la liste proposée par l'autocomplétion
+                  });
+
+                });
+           function SearchByName(){
+              var word = document.getElementById("txtSearch").value;
+              console.log("word tape", word);
+              var tableSearch = [];
+
+              if(word != ""){
+                btnSearch = true;
+
+              }
+              var found = false;
+              for(var i=0; i<resto.length; i++){
+                if(resto[i] != null &&  word == resto[i].location.address1){
+                  tableSearch.push(resto[i]);
+                  found = true;
+                }
+              }
+              if(found == false){
+                alert('Aucun résultat dans la base de donée pour votre recherche');
+              }
+              document.getElementById("txtSearch").value = ""; //Vide la barre de recherche
+              return tableSearch;
+           }
+
+           function searchByGenre(){
+             var word = document.getElementById("txtGenre").value;
+             // console.log("document: ", document.getElementById("txtGenre"));
+             console.log("genre tape", word);
+             var tableGenre = [];
+
+             if(word != ""){
+               btnGenre = true;
+             }
+
+             var found = false;
+             for(var i=0; i<resto.length; i++){
+               if(resto[i] != null &&  word == resto[i].categories[0].alias){
+                 tableGenre.push(resto[i]);
+                 found = true;
+               }
+
+             }
+             console.log("tableGenre", tableGenre);
+
+             if(found == false){
+               alert('Aucun résultat dans la base de donée pour votre recherche');
+             }
+             document.getElementById("txtGenre").value = ""; //Vide la barre de recherche
+             return tableGenre;
+           }
+
+
+
+
 
            function choixarrondissement(arrondissement){
-
                btnRadio_selectionne = true;
-
-
                tab_radio.push(arrondissement); // ajoute l'arrondissement dans le tableau
-
-                supprimer();
-
-              resultatsCLick= ajouterResto(arrondissement);
-              console.log("resultatsCLick ", resultatsCLick);
-              displayDots(resultatsCLick);
-               //console.log("resto", resto);
-               //console.log(resto[0].location.zip_code);
+               supprimer();
+               resultatsCLick= ajouterResto(arrondissement);
+               console.log("resultatsCLick ", resultatsCLick);
+               displayDots(resultatsCLick);
 
 
-           }
+          }
 
 
 
@@ -308,132 +406,24 @@ var resto9Arr=[];
 
         function ajouterResto(arrondissement){
           var tableau=[];
-
-
-            if(arrondissement == document.getElementById("arr1").id){
-                for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69001"){
-
-                    tableau.push(resto[i]);
-
-                  }
-                }
-
-              }
+          var j;
+          var cle;
+          for(cle in tableArrondissement){
+            if(arrondissement == document.getElementById(cle).id){
+              j=cle;
+              console.log("cle", j);
             }
-            else if(arrondissement == document.getElementById("arr2").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69002"){
-
-                    tableau.push(resto[i]);
-
-                  }
-                }
-
-              }
-            }
-            else if(arrondissement == document.getElementById("arr3").id){
-
-                for(var i=0; i<resto.length; i++){
-
-                  if(resto[i] != null){
-                    if(resto[i].location.zip_code == "69003"){
-                      tableau.push(resto[i]);
-                      console.log("tab", tableau);
-                    }
-                  }
-
-                }
-
-            }
-            else if(arrondissement == document.getElementById("arr4").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69004"){
-
-                    tableau.push(resto[i]);
-
-                    }
-                }
-
-              }
           }
 
-            else if(arrondissement == document.getElementById("arr5").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69005"){
-
-                    tableau.push(resto[i]);
-
-                  }
-                }
-
+          for(var i=0; i<resto.length; i++){
+            if(resto[i] != null){
+              if(resto[i].location.zip_code == tableArrondissement[j]){
+                tableau.push(resto[i]);
               }
             }
+          }
 
-            else if(arrondissement == document.getElementById("arr6").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69006"){
-
-                    tableau.push(resto[i]);
-
-                  }
-                }
-
-              }
-            }
-            else if(arrondissement == document.getElementById("arr7").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69007"){
-
-                    tableau.push(resto[i]);
-
-                  }
-                }
-
-              }
-            }
-            else if(arrondissement == document.getElementById("arr8").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69008"){
-
-                    tableau.push(resto[i]);
-
-                  }
-                }
-
-              }
-            }
-            else if(arrondissement == document.getElementById("arr9").id){
-              for(var i=0; i<resto.length; i++){
-
-                if(resto[i] != null){
-                  if(resto[i].location.zip_code == "69009"){
-
-                    tableau.push(resto[i]);
-
-
-                  }
-                }
-
-              }
-            }
-
-
-            return tableau;
+          return tableau;
         }
 
         //ajouter une fonction pour supprimer les données de resultatsCLick
@@ -441,6 +431,35 @@ var resto9Arr=[];
         resultatsCLick.forEach(function(x){
           x="";
         });
+        resultatsCLick = [];
+      }
+
+
+      function rechercher(){
+        var tableauG=[];
+        var tableauS=[];
+        var tableauA=[];
+
+        var total=[];
+
+        if(btnSearch == true){
+          tableauS=SearchByName();
+          if(btnGenre == true){
+            tableauG=searchByGenre(tableauS);
+            btnRadio_selectionne = true;
+            supprimer();
+            total= ajouterResto(arrondissement, tableauG);
+            console.log("total results ", total);
+            displayDots(total);
+          }
+
+        }
+        else{
+          if(btnGenre == true){
+
+          }
+        }
+
       }
 
 

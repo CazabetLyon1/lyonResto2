@@ -1,3 +1,28 @@
+div.jumbotron.head-lyon{
+    color:#fff;
+    text-align:left;
+    background-size:cover;
+    background: url('/home/siny/Bureau/g28project/proj/images/images.png');
+    background-position:center;
+    line-height: 100%;
+
+}
+
+div.jumbotron.mid-img{
+  color:#F0FFFF;
+  text-align: left;
+  /*background-size:cover;*/
+  background-position:center;
+  line-height: 100%;
+  background: url('/home/siny/Bureau/g28project/proj/imageresto.jpg');
+
+}
+
+h3.head-guide{
+  text-align:center;
+}
+
+
 #mapid {
   height: 700px;
 }
@@ -10,7 +35,7 @@
   text-align: center;
   padding: 40px;
   /* margin: 1% 2% 1% 2%; */
-  
+
 }
 .content{
   margin: 5% 7% 0 7%;
