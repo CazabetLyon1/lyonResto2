@@ -1,6 +1,8 @@
 #txtSearch {
        box-sizing: border-box;
-       width: 385%;
+       width: 600px;
+       height: auto;
+       position:relative;
        border: 1px solid #999;
        background: #fff;
        padding: 10px;
@@ -55,8 +57,9 @@ p.intro{
 }
 
 #mapid {
-  height: 700px;
-  width: 900px;
+  height: 650px;
+  position:relative;
+  width: 700px;
 }
 #image{
   height: 300px;
