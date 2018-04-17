@@ -1,3 +1,11 @@
+#txtSearch {
+       box-sizing: border-box;
+       width: 385%;
+       border: 1px solid #999;
+       background: #fff;
+       padding: 10px;
+   }
+
 .btn {
   text-align: right;
 
