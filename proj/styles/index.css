@@ -34,9 +34,24 @@ h3.head-guide{
   text-align:center;
 }
 
+div.entete{
+    border: 1px solid;
+    padding: 8px;
+    box-shadow: 5px 5.5px;
+
+}
+
 h2.sitename{
 
   text-align: center;
+  text-decoration: underline overline;
+  text-decoration-style: double;
+  text-shadow: 5px 5px 10px blue;
+  text-decoration-color: black;
+}
+p.intro{
+  text-align: center;
+  font-size: 150%;
 }
 
 #mapid {
