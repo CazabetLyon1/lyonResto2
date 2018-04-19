@@ -30,26 +30,17 @@
 <body>
   <div class="col-lg-1"></div>
   <div class="col-md-10 jumbotron head-lyon">
-    <h2 class="sitename">LYON FOOD</h2>
-    <div class="entete">
-    <p class="intro">Envie de goûter à la cuisine lyonnaise ?</p>
 
-    <h3 class="head-guide">Voici votre guide de restaurants à Lyon</h3>
+    <h2 class="sitename"><b>LYON FOOD</b></h2>
+    <div class="entete">
+    <p class="intro"><b>Envie de goûter à la cuisine lyonnaise ?</b></p>
+
+    <h3 class="head-guide"><b>Voici votre guide de restaurants à Lyon</b></h3>
    </div>
   </div>
   <div class="col-lg-1"></div>
 
-  <div class="content">
-    <div class="row">
-      <div class="col-md-1"></div>
-      <div class="col-md-10 jumbotron mid-img">
-        <p>Lyon, capitale de la gastronomie</p>
-        <p>"La vraie cuisine est une forme d'art, </p>
-        <p>un cadeau à partager"</p>
-        <p>Arnold Wesker</p>
-      </div>
-      <div class="col-md-1"></div>
-    </div>
+
 
 
     <div class="row">
@@ -59,12 +50,12 @@
           <div class="searchbar">
             <table>
               <tr>
-                <td><h3 >Recherche nom/type</h3></td>
+                <td><h3 style="position:relative" >Recherche nom/type</h3></td>
                 <td>
                   <input id="txtSearch" type="text" class="form-control input-lg" placeholder="Recherche par nom/type.." name="search">
                 </td>
                 <td>
-                  <button type="button" class="btn btn-lg" onclick= "rechercher()" style="margin-left:8px">
+                  <button type="button" class="btn btn-lg" onclick= "rechercher()" style="margin-left:20px;position:relative">
                   <span class="glyphicon glyphicon-search"></span>Search
 
                   </button>
@@ -78,15 +69,15 @@
   </div>
 
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-1"></div>
         <div class="col-md-10 card-title" style="text-align:center">
 
-          <h2>TOUS NOS RESTAURANTS</h2>
+          <h2 style="top:850px">TOUS NOS RESTAURANTS</h2>
 
         </div>
         <div class="col-md-1"></div>
-    </div>
+    </div> -->
 
 
 
@@ -94,7 +85,24 @@
 
     <div class="col-md-2">
       <div class="row">
-        <h3> Tri par arrondissement</h3>
+
+        <div class="row rate">
+          <h2 class="rating">Rating</h2>
+        </div>
+          <ul id="etoileR">
+
+              <img src="images/star.png" id='_1R'   onclick="etoile(1)" onmouseover="slide_star(1)" />
+              <img src="images/star.png" id='_2R'   onclick="etoile(2)" onmouseover="slide_star(2)" />
+              <img src="images/star.png" id='_3R'   onclick="etoile(3)" onmouseover="slide_star(3)" />
+              <img src="images/star.png" id='_4R'   onclick="etoile(4)" onmouseover="slide_star(4)"/>
+              <img src="images/star.png" id='_5R'   onclick="etoile(5)" onmouseover="slide_star(5)"/>
+              <i class="fa fa-times-circle" type="button" onclick="sup_etoile()" style="color:red;"></i><br/>
+          </ul>
+
+      </div>
+
+      <div class="row">
+        <h3 class="tri">  Tri par arrondissement</h3>
       </div>
       <div class="radio">
         <label><input name="arrondissement" id="arr1" type="radio" onclick="choixarrondissement(this.id)" >Lyon 1</label>
@@ -141,13 +149,20 @@
       <div class="radio">
         <label><input name="arrondissement" id="arr15" type="radio" onclick="choixarrondissement(this.id)">Bron</label>
       </div>
+      <div class="radio">
+      <i class="fa fa-times-circle" type="radio" onclick="sup_arrondissement()" style="color:red;">UnSelect</i><br/>
+     </div>
 
   </div>
 
 
   <div class="col-md-7">
-    <div id="mapid"></div>
+    <div id="mapid"></div><br/>
   </div>
+
+
+
+
 
   <div class="col-md-3">
       <h2 id="name" style="text-align:center"></h2>
@@ -173,6 +188,19 @@
 
 
 
+      <div class="row" >
+
+        <div class="col-md-12  jumbotron mid-img">
+          <p>Lyon, capitale de la gastronomie</p>
+          <p>"La vraie cuisine est une forme d'art, </p>
+          <p>un cadeau à partager"</p>
+          <p>Arnold Wesker</p>
+        </div>
+
+      </div>
+
+
+
 
 
 
@@ -183,42 +211,57 @@
 
 <script>
 
-/* déclaration de la variable qui va contenir la carte */
+     // déclaration de la variable qui va contenir la carte
       var map;
 
-      /*tableau qui contiendra tous les restaurants de lyon  */
+      //tableau qui contiendra tous les restaurants de lyon
       var resto=[];
-      /* tableau des restaurants après filtrage des doublons */
+      // tableau des restaurants après filtrage des doublons
       var tableSansDoublons=[];
 
-      /*tableau qui contiendra les markers des restaurants */
+      //tableau qui contiendra les markers des restaurants
       var mesMarkers=[];
 
       var loc=[];
-    /*variable booleennes pour la recherche ou la selection d'un bouton de type radio */
+
+     //variable booleennes pour la recherche ou la selection d'un bouton de type radio
       var btnRadio_selectionne = false;
       var btnSearch = false;
-      var btnGenre = false;
-      var btnRating = false;
 
 
-    /*variable qui récupère l'arrondissement selectionné */
+
+    //variable qui récupère l'arrondissement selectionné
       var tab_radio = [];
 
-      /*tableau dans lequel on stocke les restaurants d'un arrondissement précis */
+      //tableau dans lequel on stocke les restaurants d'un arrondissement précis
       var resultatsCLick = [];
 
-      /*tableau dans lequel on récupère tous les noms de restaurants */
+      //tableau dans lequel on récupère tous les noms de restaurants
       var baseName = [];
-     /*tableau dans lequel on stocke les resultats de recherche */
+     //tableau dans lequel on stocke les resultats de recherche
       var tableSearch = [];
 
+      //table_etoile récupère les restaurant avec le rating selectionné
+      var table_etoile=[];
+
+     //tableau d'object contenant les codes postaux des arrondissements de lyon et des villes aux alentours
       var tableArrondissement = { "arr1" : 69001, "arr2" : 69002, "arr3": 69003, "arr4": 69004, "arr5": 69005, "arr6": 69006, "arr7": 69007, "arr8": 69008,
       "arr9": 69009, "arr10": 69100, "arr11": 69110,
       "arr12": 69120, "arr13": 69200, "arr14": 69300, "arr15": 69500  };
 
+      // etoile_selectionne est un booléen permettant de savoir si une étoile est oui ou non sélectionné
+      var etoile_selectionne = false;
 
-       /*initialisation de notre carte */
+
+      //tabEtoile : tableau à deux éléments, une étoile blanche et une étoile jaune
+  		var tabEtoile    = new Array();
+  		tabEtoile[0]     = new Image();
+  		tabEtoile[0].src = "images/star.png";
+  		tabEtoile[1]     = new Image();
+  		tabEtoile[1].src = "images/star_yellow.png";
+
+
+       //initialisation de notre carte
         document.getElementById('mapid').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
          map = L.map('map').setView([45.75, 4.85], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
@@ -229,7 +272,7 @@
 
          var layerGroup = L.layerGroup().addTo(map);
 
-       /*Récupération des données json dans notre tableau resto et affichage de l'ensemble des resto*/
+       //Récupération des données json dans notre tableau resto et affichage de l'ensemble des resto
         $.getJSON('src/properResto.json', function (data) {
 
                  resto=data;
@@ -245,7 +288,7 @@
 
         });
 
-        /* fonction qui permet de supprimer les doublons de restaurant contenus dans le tableau resto */
+        // fonction qui permet de supprimer les doublons de restaurant contenus dans le tableau resto
         function deleteDoublons(){
           var cache = {};
           tableSansDoublons = resto.filter(function(elem,index,array){
@@ -257,7 +300,7 @@
         }
 
 
-          /*fonction d'affichage des restaurants  */
+          //fonction d'affichage des restaurants
         function displayDots(restochoisi){
             //console.log("displayDOT", restochoisi );
             for(var i=0; i<restochoisi.length; i++){
@@ -281,10 +324,10 @@
                   var infos = 'Name: '+ restochoisi[i].name + ' Rating: '+ restochoisi[i].rating + ' phone: '+ restochoisi[i].display_phone ;
                   var coordinates = {lat: restochoisi[i].coordinates.latitude, lng: restochoisi[i].coordinates.longitude};
 
-                   /*création des markers de chaque restaurant */
+                   //création des markers de chaque restaurant
                    mesMarkers[i] = new L.marker(coordinates,loc[i]).bindPopup(infos).on('click',markerOnClick);
 
-                  /*ajout d'un champ info dans chaque marker */
+                  //ajout d'un champ info dans chaque marker
                   mesMarkers[i].infos=details;
                   layerGroup.addLayer(mesMarkers[i]);
 
@@ -296,13 +339,13 @@
                 //console.log("loc :",loc);
            }
 
-          /*fonction à executer en cas de click sur un marker afin d'afficher les information sur le restaurant*/
+          //fonction à executer en cas de click sur un marker afin d'afficher la grille avec les information sur le restaurant
         function markerOnClick(e){
 
                 //console.log("e :",e);
                //console.log("e.target :",e.target);
 
-               document.getElementById("imageMarker").src = e.target.infos.image_url;
+           document.getElementById("imageMarker").src = e.target.infos.image_url;
            document.getElementById("markerInfos").style.display = "block";
            document.getElementById("name").innerHTML = e.target.infos.name;
            document.getElementById("type").innerHTML = e.target.infos.type;
@@ -314,7 +357,7 @@
 
           }
 
-            /*fonction qui nous supprime tout les marker de la carte en cas de selection d'un nouveau critère */
+          //fonction qui nous supprime tout les marker de la carte en cas de selection d'un nouveau critère
         function supprimer(){
             //console.log("avant sdhzegv");
             layerGroup.eachLayer(function(layer){
@@ -322,12 +365,12 @@
             });
 
            //permet de décocher un bouton radio quand on sélectionne une nouvelle catégorie
-           if(btnRadio_selectionne==true){
-                var arrondissement = tab_radio[0];
-              //document.getElementById(arrondissement).checked = false;
-                  btnRadio_selectionne = false;
-                tab_radio = [];
-            }
+           // if(btnRadio_selectionne==true){
+           //      var arrondissement = tab_radio[0];
+           //    //document.getElementById(arrondissement).checked = false;
+           //        btnRadio_selectionne = false;
+           //      tab_radio = [];
+           //  }
         }
 
         function toucheEntree (event){
@@ -338,7 +381,7 @@
         }
 
 
-        /*fonction d'autocomplétion dans le cas d'une recherche */
+        //fonction d'autocomplétion dans le cas d'une recherche
         $(function(){
             $("#txtSearch").autocomplete({
               source: baseName,
@@ -351,10 +394,12 @@
 
 
 
-        /*fonction qui fera l'affichage des restaurants d'un arrondissement donné */
+        //fonction qui fera l'affichage des restaurants d'un arrondissement donné
         function choixarrondissement(arrondissement){
              btnRadio_selectionne = true;
+             sup_etoile();
              tab_radio.push(arrondissement); // ajoute l'arrondissement dans le tableau
+             //console.log("tabradio :",tab_radio);
              supprimer();
              resultatsCLick= ajouterResto(arrondissement);
              //console.log("resultatsCLick ", resultatsCLick);
@@ -362,7 +407,7 @@
 
        }
 
-       /*focntion qui récupère les restaurant d'un arrondissement selectionné dans un tableau */
+       //focntion qui récupère les restaurant d'un arrondissement selectionné dans un tableau
         function ajouterResto(arrondissement){
             var tableau=[];
             var j;
@@ -393,24 +438,38 @@
           resultatsCLick = [];
         }
 
-     /*fonction à executer en cas de saisie dans la barre de recherche */
+     //fonction à executer en cas de saisie dans la barre de recherche
         function rechercher(){
-           btnRadio_selectionne = false;
-           tab_radio=[];
+          if(btnRadio_selectionne==true){
+            sup_arrondissement();
+          }
+
+           sup_etoile();
+           console.log(tableSansDoublons);
           var word = document.getElementById("txtSearch").value;
-          console.log(word);
+          //console.log(word);
           if(word != ""){
             btnSearch = true;
           }
 
           var found = false;
           for(var i=0; i<tableSansDoublons.length; i++){
-            if(word == tableSansDoublons[i].name || word == tableSansDoublons[i].categories[0].alias){
+            //console.log(i);
+            if( word == tableSansDoublons[i].name ){
               tableSearch.push(tableSansDoublons[i]);
               found = true;
             }
+            for(var j=0;j<tableSansDoublons[i].categories.length;j++){
+
+              if(word == tableSansDoublons[i].categories[j].alias || word == tableSansDoublons[i].categories[j].title ){
+                tableSearch.push(tableSansDoublons[i]);
+                found = true;
+              }
+            }
 
           }
+          //console.log("aaa :",tableSansDoublons[0].categories[1] );
+          //console.log(tableSearch);
 
           if(found == false){
             alert('Aucun résultat dans la base de données pour votre recherche');
@@ -420,11 +479,62 @@
           displayDots(tableSearch);
       }
 
+     //la fonction etoile permet d'afficher les restaurants qui ont une note égale au nombre d'étoile selectionné
+      function etoile(val){
+          supprimer();
+          if(btnRadio_selectionne==true){
+            sup_arrondissement();
+          }
+
+          etoile_selectionne = true;
+
+          for(var i=0;i<tableSansDoublons.length ;i++){
+              if(tableSansDoublons[i].rating>=val && tableSansDoublons[i].rating<(val+1)){
+
+                table_etoile.push(tableSansDoublons[i]);
+              }
+          }
+
+          displayDots(table_etoile);
+          table_etoile=[];
+      }
+
+  //la fonction slide_star permet d'incrémenter les étoiles lorsqu'on passe dessus avec la souris
+      function slide_star(level){
+          // quand on repasse sur les étoiles alors qu'on a déjà cliquer
+          if (etoile_selectionne){
+              for(i=1;i<6;i++){
+                  document.getElementById('_'+i + "R").src=tabEtoile[0].src;
+              }
+          }
+
+          for(i=1;i<6;i++){
+            //tant que la souris n'est pas passée sur une des étoiles on affiche les étoiles de couleurs blanche
+            document.getElementById('_'+i + "R").src=(level<i)? tabEtoile[0].src : tabEtoile[1].src;
+          }
+      }
+
+    //la fonction sup_etoile permet de deselectionner toutes les étoiles en cliquant sur la croix
+      function sup_etoile(){
+          supprimer();
+          displayDots(tableSansDoublons);
+          for(i=1;i<6;i++){
+              document.getElementById('_'+i + "R").src = tabEtoile[0].src;
+          }
+          etoile_selectionne=false;
+      }
 
 
+     //cette function permet de décocher le bouton radio de l'arrondissement selectionné en cliquant sue la croix
+     function sup_arrondissement(){
+          supprimer();
+          displayDots(tableSansDoublons);
+          document.getElementById(tab_radio[0]).checked = false;
+          tab_radio=[];
+          btnRadio_selectionne=false;
 
 
-
+     }
 
 
 </script>
