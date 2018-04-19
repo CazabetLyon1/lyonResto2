@@ -35,6 +35,8 @@ div.jumbotron.mid-img{
   background: url('../images/imageresto.jpg');
   margin-left: 5%  ;
   margin-right: 5%;
+  min-width: 1150px;
+  max-width: 1450px;
 
 }
 
@@ -109,7 +111,9 @@ h3.tri{
 #mapid {
   height: 650px;
   position:relative;
-  width: 750px;
+  width:750px;
+  min-width: 750px;
+  max-width: 1050px;
   border: 1px solid;
 }
 #image{
