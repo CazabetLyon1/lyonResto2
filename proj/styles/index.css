@@ -29,14 +29,15 @@ div.jumbotron.mid-img{
   color:#F0FFFF;
   text-align: left;
   /* background-size:cover; */
-  width:1200px;
-  background-position:center;
+  /* width:1200px; */
+  width: auto;
+  /* background-position:center; */
   line-height: 80%;
   background: url('../images/imageresto.jpg');
-  margin-left: 5%  ;
-  margin-right: 5%;
-  min-width: 1150px;
-  max-width: 1450px;
+  margin-left: 10% ;
+  margin-right:15%;
+  min-width: 1100px;
+  max-width: 1500px;
 
 }
 
@@ -111,7 +112,8 @@ h3.tri{
 #mapid {
   height: 650px;
   position:relative;
-  width:750px;
+  /* width:750px; */
+  width: auto;
   min-width: 750px;
   max-width: 1050px;
   border: 1px solid;
