@@ -94,7 +94,10 @@ div.col-md-2{
 
 
 }
-
+div.col-md-3{
+  position:relative;
+  zoom:normal;
+}
 div.rate{
   width:105%;
   text-align: center;
@@ -117,10 +120,12 @@ h3.tri{
   min-width: 750px;
   max-width: 1050px;
   border: 1px solid;
+  zoom:normal;
 }
 #image{
-  height: 300px;
-  margin-bottom: 20px;
+  height: auto;
+  max-height: 300px;
+  /* margin-bottom: 20px; */
 }
 
 .head{
